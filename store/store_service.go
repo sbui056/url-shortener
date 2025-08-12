@@ -55,5 +55,3 @@ funct RetrieveInitialUrl(shortUrl string) string {
 	}
 	return result
 }
-
-/*** Store Service Setup ***/
