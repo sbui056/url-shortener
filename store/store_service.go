@@ -7,6 +7,8 @@ import (
 	"time"
 )
 
+/*** Store Service Setup ***/
+
 // struct to wrap Redis client
 type StoreService struct {
 	client *redis.Client
@@ -37,3 +39,21 @@ func InitializeStore() *StorageService {
 	storeService.redisClient = redisClient
 	return storeService
 }
+
+/*** Store API Design and Implementation ***/
+funct SaveUrlMapping(shortUrl string, originalUrl string, userId string) {
+	err := storeService.redisClient.Set(ctx, shortUrl, originalUrl, CacheDuration).Err()
+	if err != nil {
+		panic(fmt.Sprintf("Failed saving key URL | Error: %v - shortUrl: %s - originalUrl: %s\n", err, shortUrl, originalUrl))
+	}
+}
+
+funct RetrieveInitialUrl(shortUrl string) string {
+	result, err := storeService.redisClient.Get(ctx, shortUrl).Result()
+	if err != nil {
+		panic(fmt.Sprintf("Failed RetrieveInitalUrl url | Error: %v - shortUrl: %s\n", err, shortUrl))
+	}
+	return result
+}
+
+/*** Store Service Setup ***/
