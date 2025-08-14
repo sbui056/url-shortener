@@ -10,8 +10,8 @@ import (
 /*** Store Service Setup ***/
 
 // struct to wrap Redis client
-type StoreService struct {
-	client *redis.Client
+type StorageService struct {
+	redisClient *redis.Client
 }
 
 // declaration of the storage service and redis context
@@ -20,11 +20,11 @@ var (
 	ctx = context.Background()
 )
 
-const CacheExpiration = 6 * time.Hour
+const CacheDuration = 6 * time.Hour
 
 // initialize store service and store pointer
 func InitializeStore() *StorageService {
-	redisClient := redi.NewClient(&redis.Options{
+	redisClient := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "",
 		DB:       0,
