@@ -41,14 +41,14 @@ func InitializeStore() *StorageService {
 }
 
 /*** Store API Design and Implementation ***/
-funct SaveUrlMapping(shortUrl string, originalUrl string, userId string) {
+func SaveUrlMapping(shortUrl string, originalUrl string, userId string) {
 	err := storeService.redisClient.Set(ctx, shortUrl, originalUrl, CacheDuration).Err()
 	if err != nil {
 		panic(fmt.Sprintf("Failed saving key URL | Error: %v - shortUrl: %s - originalUrl: %s\n", err, shortUrl, originalUrl))
 	}
 }
 
-funct RetrieveInitialUrl(shortUrl string) string {
+func RetrieveInitialUrl(shortUrl string) string {
 	result, err := storeService.redisClient.Get(ctx, shortUrl).Result()
 	if err != nil {
 		panic(fmt.Sprintf("Failed RetrieveInitalUrl url | Error: %v - shortUrl: %s\n", err, shortUrl))

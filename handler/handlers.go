@@ -12,7 +12,7 @@ type UrlCreationRequest struct {
 	UserId string `json:"user_id" binding:"required"`
 }
 
-funct CreateShortURL(c *gin.Context) {
+func CreateShortURL(c *gin.Context) {
 	var creationRequest UrlCreationRequest
 	if err := c.ShouldBindJSON(&creationRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})

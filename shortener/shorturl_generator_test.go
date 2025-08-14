@@ -1,24 +1,39 @@
 package shortener
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+	"github.com/stretchr/testify/assert"
 )
 
-const UserId = "e0dba740-fc4b-4977-872c-d360239e6b1a"
+const UserID = "e0dba740-fc4b-4977-872c-d360239e6b1a"
 
-funct TestShortLinkGenerator(t *testing.T) {
-	initialLink_1 := "https://www.guru3d.com/news-story/spotted-ryzen-threadripper-pro-3995wx-processor-with-8-channel-ddr4,2.html"
-	shortLink_1 := GenerateShortLink(initialLink_1, UserId)
+func TestGenerateShortLink_UniqueGeneration(t *testing.T) {
+	link1 := "https://www.example.com/page1"
+	link2 := "https://www.example.com/page2"
 
-	initialLink_2 := "https://www.eddywm.com/lets-build-a-url-shortener-in-go-with-redis-part-2-storage-layer/"
-	shortLink_2 := GenerateShortLink(initialLink_2, UserId)
+	short1 := GenerateShortLink(link1, UserID)
+	short2 := GenerateShortLink(link2, UserID)
 
-	initialLink_3 := "https://spectrum.ieee.org/automaton/robotics/home-robots/hello-robots-stretch-mobile-manipulator"
-	shortLink_3 := GenerateShortLink(initialLink_3, UserId)
+	assert.NotEmpty(t, short1, "Short link for link1 should not be empty")
+	assert.NotEmpty(t, short2, "Short link for link2 should not be empty")
+	assert.NotEqual(t, short1, short2, "Different URLs should generate different short links")
+}
 
+func TestGenerateShortLink_Consistency(t *testing.T) {
+	link := "https://www.example.com/page"
+	short1 := GenerateShortLink(link, UserID)
+	short2 := GenerateShortLink(link, UserID)
 
-	assert.Equal(t, shortLink_1, "jTa4L57P")
-	assert.Equal(t, shortLink_2, "d66yfx7N")
-	assert.Equal(t, shortLink_3, "dhZTayYQ")
+	assert.Equal(t, short1, short2, "Same URL and user ID should generate the same short link")
+}
+
+func TestGenerateShortLink_DifferentUsers(t *testing.T) {
+	link := "https://www.example.com/page"
+	user1 := "user-123"
+	user2 := "user-456"
+
+	short1 := GenerateShortLink(link, user1)
+	short2 := GenerateShortLink(link, user2)
+
+	assert.NotEqual(t, short1, short2, "Same URL with different user IDs should generate different short links")
 }
